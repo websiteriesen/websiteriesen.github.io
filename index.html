@@ -1,1 +1,119 @@
-First test
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Miami Cruise Check-In</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0072ff, #00c6ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+    }
+
+    .container {
+      background: white;
+      color: #333;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .container.success {
+      background: #e6ffe6;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      border: none;
+      background-color: #0072ff;
+      color: white;
+      font-size: 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005ecc;
+    }
+
+    .error {
+      color: red;
+      margin-top: 0.5rem;
+      font-weight: bold;
+      min-height: 1.5em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="form-container">
+    <h1>Reederei Streifing – Miami Cruise Check-In</h1>
+    <form id="checkinForm">
+      <input type="text" id="name" placeholder="Enter your name" required />
+      <input type="text" id="cruiseId" placeholder="Enter Cruise ID" required />
+      <p id="error" class="error"></p>
+      <button type="submit">Check In</button>
+    </form>
+  </div>
+
+  <script>
+    function showConfirmation() {
+      const name = localStorage.getItem('checkinName');
+      const checkinId = localStorage.getItem('checkinId');
+      const container = document.getElementById('form-container');
+      container.className = 'container success';
+      container.innerHTML = `
+        <h1>Check-In Successful</h1>
+        <p>Thank you, ${name}. Your check-in ID is ${checkinId}.</p>
+        <button onclick="window.print()">Print Confirmation</button>
+      `;
+    }
+
+    document.getElementById('checkinForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const cruiseId = document.getElementById('cruiseId').value.trim();
+      const error = document.getElementById('error');
+      let cruiseOk = false;
+      if (cruiseId === "RS-2065-MIA") {
+        const checkInId = "CHK-" + Math.random().toString(36).substr(2, 8).toUpperCase();
+        localStorage.setItem('checkinName', name);
+        localStorage.setItem('checkinId', checkInId);
+        cruiseOk = true;
+      } else {
+        error.textContent = "Invalid Cruise ID.";
+      }
+      let nameOk = true;
+      if (cruiseOk && !name.toLowerCase().includes('bettina') && !name.toLowerCase().includes('carina') && !name.toLowerCase().includes('julia'))        
+      {
+          error.textContent = "Guest not found";
+          nameOk = false;
+      }
+
+      if(cruiseOk && nameOk) {
+          showConfirmation();
+      }
+    });
+  </script>
+</body>
+</html>
