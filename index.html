@@ -126,7 +126,20 @@
     const REQUIRED_CRUISE_ID = 'RS-2088-BORA';
     // use lowercase
     const ALLOWED_NAMES = ['julia schabasser', 'bettina zillinger', 'carina drisa'];
-    const TOTAL_CABINS = 12;
+    const CABIN_NAMES = [
+      'Ahoi Basic',
+      'Seegang Spa',
+      'Kapitäns Koje Deluxe',
+      'Matrosen Muckelbude',
+      'Lagunen Lounge',
+      'Sonnenuntergang Suite',
+      'Wellen Wellness',
+      'Rum und Ruhe',
+      'Seestern Deluxe',
+      'Palmen Panorama',
+      'Kabine 11',
+      'Meerschaum Loft'
+    ];
 
     const form = document.getElementById('checkinForm');
     const formScreen = document.getElementById('form-screen');
@@ -139,8 +152,8 @@
     const confirmationCodeEl = document.getElementById('confirmation-code');
     const restartBtn = document.getElementById('restartBtn');
 
-    const cabins = Array.from({ length: TOTAL_CABINS }, (_, index) => ({
-      number: String(index + 1).padStart(2, '0'),
+    const cabins = CABIN_NAMES.map((label, index) => ({
+      label,
       available: index + 1 === 11
     }));
 
@@ -165,7 +178,7 @@
       cabins.forEach(cabin => {
         const button = document.createElement('button');
         button.type = 'button';
-        button.dataset.cabin = cabin.number;
+        button.dataset.cabin = cabin.label;
         button.disabled = !cabin.available;
         button.className = [
           'w-full rounded-2xl border px-4 py-5 text-left transition shadow-sm',
@@ -175,7 +188,7 @@
         ].join(' ');
         button.innerHTML = `
           <div class="flex items-center justify-between">
-            <span class="text-lg font-semibold text-slate-900">Kabine ${cabin.number}</span>
+            <span class="text-lg font-semibold text-slate-900">${cabin.label}</span>
             ${cabin.available
               ? '<span class="text-sm font-bold text-emerald-600">Verfügbar</span>'
               : '<span class="text-xs font-semibold uppercase tracking-wide text-rose-500">Belegt</span>'}
