@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <title>Online Check-in Bora Bora</title>
+  <title>Online Check-in Island</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
     <div class="w-full max-w-2xl">
       <div class="text-center text-white mb-10 space-y-3">
         <p class="uppercase tracking-[0.4em] text-xs font-semibold text-cyan-200">Reederei Streifing</p>
-        <h1 class="text-4xl md:text-5xl font-semibold">Online Check-in Bora Bora</h1>
+        <h1 class="text-4xl md:text-5xl font-semibold">Online Check-in Island</h1>
         <p class="text-sm md:text-base text-cyan-100">Bestätige deine Teilnahme an der Party-Cruise und sichere dir deine Kabine.</p>
       </div>
 
@@ -88,10 +88,52 @@
           <div id="cabinList" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
         </section>
 
+        <section id="menu-screen" class="hidden p-8 space-y-6">
+          <div class="space-y-2">
+            <p class="text-xs uppercase tracking-[0.4em] text-slate-400">Schritt 3</p>
+            <h2 class="text-2xl font-semibold text-slate-900">Menüauswahl</h2>
+            <p class="text-sm text-slate-600">Wähle dein Menü für den Abend.</p>
+          </div>
+
+          <div class="rounded-2xl border border-emerald-200 bg-white px-4 py-5 shadow-sm">
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <p class="text-lg font-semibold text-slate-900">Schnitzel</p>
+                <p class="text-sm text-slate-600">Einzige verfügbare Wahl für diese Fahrt.</p>
+              </div>
+              <span class="text-sm font-semibold text-emerald-600">Ausgewählt</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            id="continueToHintBtn"
+            class="w-full rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 py-3 text-lg font-semibold text-white shadow-lg shadow-emerald-600/30 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400">
+            Weiter zur Info
+          </button>
+        </section>
+
+        <section id="hint-screen" class="hidden p-8 space-y-6">
+          <div class="space-y-2">
+            <p class="text-xs uppercase tracking-[0.4em] text-slate-400">Schritt 4</p>
+            <h2 class="text-2xl font-semibold text-slate-900">Hinweis vor dem Check-in</h2>
+          </div>
+
+          <div class="rounded-2xl border border-sky-200 bg-sky-50 px-5 py-4 text-slate-800">
+            Bitte bringen Sie ein großes (etwa 100cm langes) und kleines (etwa 50cm langes) Handtuch mit.
+          </div>
+
+          <button
+            type="button"
+            id="finalCheckinBtn"
+            class="w-full rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 py-3 text-lg font-semibold text-white shadow-lg shadow-emerald-600/30 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400">
+            Jetzt final einchecken
+          </button>
+        </section>
+
         <section id="confirmation-screen" class="hidden p-8 space-y-6 text-center">
           <div class="space-y-4">
             <div class="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-emerald-800 text-sm font-semibold">
-              <span>✔</span>
               Check-in bestätigt
             </div>
             <h2 class="text-3xl font-semibold text-slate-900">Bis bald im Paradies!</h2>
@@ -99,6 +141,15 @@
               Vielen Dank, <span id="guest-name" class="font-semibold text-slate-900"></span>. Kabine
               <span id="selected-cabin" class="font-mono text-lg text-emerald-600"></span> ist exklusiv für dich hinterlegt.
             </p>
+            <p class="text-base text-slate-600">
+              Gewähltes Menü: <span id="selected-menu" class="font-semibold text-slate-900"></span>
+            </p>
+            <div class="mx-auto max-w-xl rounded-2xl border-2 border-amber-300 bg-amber-50 px-5 py-4 text-left shadow-sm">
+              <p class="text-lg font-bold text-amber-800">Hinweis</p>
+              <p class="mt-1 text-base text-amber-900">
+                Bitte bringen Sie ein großes (etwa 100cm langes) und kleines (etwa 50cm langes) Handtuch mit.
+              </p>
+            </div>
             <div class="text-sm text-slate-500">
               Check-in-Code: <span id="confirmation-code" class="font-mono text-base text-slate-800"></span>
             </div>
@@ -106,8 +157,9 @@
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               type="button"
+              id="printBtn"
               class="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-700 shadow hover:border-slate-400"
-              onclick="window.print()">
+              >
               Bestätigung drucken
             </button>
             <button
@@ -123,9 +175,9 @@
   </div>
 
   <script>
-    const REQUIRED_CRUISE_ID = 'RS-2088-BORA';
+    const REQUIRED_CRUISE_ID = 'MS-AMADEA-458';
     // use lowercase
-    const ALLOWED_NAMES = ['julia schabasser', 'bettina zillinger', 'carina drisa'];
+    const ALLOWED_NAMES = ['julia schabasser', 'bettina zillinger', 'carina drisa', 'lena riffer'];
     const CABIN_NAMES = [
       'Ahoi Basic',
       'Seegang Spa',
@@ -140,17 +192,30 @@
       'Kabine 11',
       'Meerschaum Loft'
     ];
+    const CHECKIN_MENU = 'Schnitzel';
 
     const form = document.getElementById('checkinForm');
     const formScreen = document.getElementById('form-screen');
     const cabinScreen = document.getElementById('cabin-screen');
+    const menuScreen = document.getElementById('menu-screen');
+    const hintScreen = document.getElementById('hint-screen');
     const confirmationScreen = document.getElementById('confirmation-screen');
     const errorEl = document.getElementById('error');
     const cabinList = document.getElementById('cabinList');
+    const continueToHintBtn = document.getElementById('continueToHintBtn');
+    const finalCheckinBtn = document.getElementById('finalCheckinBtn');
+    const printBtn = document.getElementById('printBtn');
     const guestNameEl = document.getElementById('guest-name');
     const selectedCabinEl = document.getElementById('selected-cabin');
+    const selectedMenuEl = document.getElementById('selected-menu');
     const confirmationCodeEl = document.getElementById('confirmation-code');
     const restartBtn = document.getElementById('restartBtn');
+
+    const checkInState = {
+      guestName: '',
+      selectedCabin: '',
+      selectedMenu: ''
+    };
 
     const cabins = CABIN_NAMES.map((label, index) => ({
       label,
@@ -159,18 +224,99 @@
 
     function showCabinScreen() {
       formScreen.classList.add('hidden');
+      menuScreen.classList.add('hidden');
+      hintScreen.classList.add('hidden');
+      confirmationScreen.classList.add('hidden');
       cabinScreen.classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function showConfirmation(selectedCabin, guestName) {
-      const checkInId = 'CHK-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    function showMenuScreen(selectedCabin, guestName) {
+      checkInState.selectedCabin = selectedCabin;
+      checkInState.guestName = guestName;
       cabinScreen.classList.add('hidden');
+      menuScreen.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showHintScreen(selectedMenu) {
+      checkInState.selectedMenu = selectedMenu;
+      menuScreen.classList.add('hidden');
+      hintScreen.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function capitalizeWords(value) {
+      return String(value || '')
+        .trim()
+        .toLowerCase()
+        .replace(/\b\p{L}/gu, char => char.toUpperCase());
+    }
+
+    function showConfirmation() {
+      const checkInId = 'CHK-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+      hintScreen.classList.add('hidden');
       confirmationScreen.classList.remove('hidden');
-      guestNameEl.textContent = guestName;
-      selectedCabinEl.textContent = selectedCabin;
+      guestNameEl.textContent = capitalizeWords(checkInState.guestName || 'Gast');
+      selectedCabinEl.textContent = checkInState.selectedCabin || '-';
+      selectedMenuEl.textContent = checkInState.selectedMenu || '-';
       confirmationCodeEl.textContent = checkInId;
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function printConfirmation() {
+      const printableName = guestNameEl.textContent || 'Gast';
+      const printableCabin = selectedCabinEl.textContent || '-';
+      const printableMenu = selectedMenuEl.textContent || '-';
+      const printableCode = confirmationCodeEl.textContent || '-';
+      const printableDate = new Date().toLocaleString('de-DE');
+
+      const printWindow = window.open('', '_blank', 'width=800,height=700');
+      if (!printWindow) {
+        return;
+      }
+
+      const html = `
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Check-in Bestätigung</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 32px; color: #0f172a; }
+    h1 { margin: 0 0 16px; font-size: 24px; }
+    p { margin: 8px 0; font-size: 16px; }
+    .row { margin: 10px 0; }
+    .label { display: inline-block; min-width: 150px; font-weight: 700; }
+    .card { border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; }
+    .note { margin-top: 18px; border: 2px solid #fcd34d; background: #fffbeb; border-radius: 12px; padding: 14px; }
+    .note-title { margin: 0; font-size: 24px; font-weight: 800; color: #92400e; }
+    .note-text { margin: 8px 0 0; font-size: 17px; color: #78350f; }
+    .small { margin-top: 20px; font-size: 13px; color: #475569; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Online Check-in Bestätigung</h1>
+    <p class="row"><span class="label">Name:</span> ${printableName}</p>
+    <p class="row"><span class="label">Kabine:</span> ${printableCabin}</p>
+    <p class="row"><span class="label">Menü:</span> ${printableMenu}</p>
+    <p class="row"><span class="label">Check-in-Code:</span> ${printableCode}</p>
+    <div class="note">
+      <p class="note-title">Hinweis</p>
+      <p class="note-text">Bitte bringen Sie ein großes (etwa 100cm langes) und kleines (etwa 50cm langes) Handtuch mit.</p>
+    </div>
+    <p class="small">Erstellt am: ${printableDate}</p>
+  </div>
+</body>
+</html>`;
+
+      printWindow.document.open();
+      printWindow.document.write(html);
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+      printWindow.close();
     }
 
     function renderCabins() {
@@ -234,12 +380,29 @@
 
       const selectedCabin = cabinButton.dataset.cabin;
       const guestName = localStorage.getItem('checkinName') || 'Gast';
-      showConfirmation(selectedCabin, guestName);
+      showMenuScreen(selectedCabin, guestName);
+    });
+
+    continueToHintBtn.addEventListener('click', () => {
+      showHintScreen(CHECKIN_MENU);
+    });
+
+    finalCheckinBtn.addEventListener('click', () => {
+      showConfirmation();
+    });
+
+    printBtn.addEventListener('click', () => {
+      printConfirmation();
     });
 
     restartBtn.addEventListener('click', () => {
       localStorage.removeItem('checkinName');
+      checkInState.guestName = '';
+      checkInState.selectedCabin = '';
+      checkInState.selectedMenu = '';
       confirmationScreen.classList.add('hidden');
+      hintScreen.classList.add('hidden');
+      menuScreen.classList.add('hidden');
       cabinScreen.classList.add('hidden');
       form.reset();
       formScreen.classList.remove('hidden');
